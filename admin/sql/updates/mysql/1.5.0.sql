@@ -1,0 +1,1 @@
+ALTER TABLE `#__yandexmarket_ymls` ADD `yml_limit` INT(11) NOT NULL DEFAULT '30000' AFTER `offers_count`;

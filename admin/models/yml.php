@@ -10,17 +10,16 @@
 // Запрет прямого доступа.
 defined('_JEXEC') or die;
 
-// Подключаем библиотеку modeladmin Joomla.
-jimport('joomla.application.component.modeladmin');
-
-// Подключаем библиотеку helper Joomla.
-jimport('joomla.application.component.helper');
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * Модель Yml.
  * @since 0.1
  */
-class YandexMarketModelYml extends JModelAdmin {
+class YandexMarketModelYml extends AdminModel {
     /**
      * YandexMarketModelYml constructor.
      * @param array $config
@@ -39,11 +38,11 @@ class YandexMarketModelYml extends JModelAdmin {
      * @param   string  $prefix  Префикс класса таблицы. Необязателен.
      * @param   array   $config  Конфигурационный массив. Необязателен.
      *
-     * @return  JTable  Объект JTable.
+     * @return  Table  Объект Table.
      * @since 0.1
      */
     public function getTable($type = 'yml', $prefix = 'YandexMarketTable', $config = array()) {
-        return JTable::getInstance($type, $prefix, $config);
+        return Table::getInstance($type, $prefix, $config);
     }
 
     /**
@@ -75,7 +74,7 @@ class YandexMarketModelYml extends JModelAdmin {
      */
     protected function loadFormData() {
         // Проверка сессии на наличие ранее введеных в форму данных.
-        $data = JFactory::getApplication()->getUserState($this->option . '.edit.yml.data', array());
+        $data = Factory::getApplication()->getUserState($this->option . '.edit.yml.data', array());
 
         //если в сессии данных нет, то нужно достать их из базы
         if (empty($data))  {
@@ -85,11 +84,15 @@ class YandexMarketModelYml extends JModelAdmin {
             //в которой парметры яндекс.маркет следует заполнить значениями по умолчанию из конфига расширения
             if (empty($data->id)) {
                 //достаём значения полей формы из конфига и подставляем в $data
-                $params = JComponentHelper::getParams('com_yandexmarket');
+                $params = ComponentHelper::getParams('com_yandexmarket');
                 $yaParams = $params->get('params');
 
-                foreach ($yaParams as $k=>$v) {
-                    $data->params[$k] = $v;
+                if (!empty($yaParams))
+                {
+	                foreach ($yaParams as $k => $v)
+	                {
+		                $data->params[$k] = $v;
+	                }
                 }
             }
         }

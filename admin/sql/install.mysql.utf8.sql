@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `#__yandexmarket_ymls` (
   `published` TINYINT(1) NOT NULL DEFAULT '1',
   `created_on` DATETIME NULL DEFAULT NULL,
   `offers_count` INT(11) NOT NULL DEFAULT '0',
+    `yml_limit` INT(11) NOT NULL DEFAULT '30000',
   `changefreq` ENUM('hourly','daily','weekly','monthly','yearly','never') NOT NULL DEFAULT 'weekly',
   PRIMARY KEY (`id`),
   INDEX `default_idx` (`is_default` ASC, `id` ASC))
